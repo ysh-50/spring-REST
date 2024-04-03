@@ -1,5 +1,7 @@
 package com.jspider.springrest.repository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -8,6 +10,7 @@ import javax.persistence.Persistence;
 import org.springframework.stereotype.Repository;
 
 import com.jspider.springrest.pojo.Car;
+import javax.persistence.Query;
 
 @Repository
 public class CarRepository {
@@ -46,6 +49,16 @@ public class CarRepository {
 		eT.commit();
 		closeConnection();
 		return car;
+	}
+	
+	//FIND ALL CARS
+	public List<Car> findAllCars(){
+		openConnection();
+		Query query = eM.createQuery("SELECT car FROM Car car");
+		@SuppressWarnings("unchecked")
+		List<Car> cars = query.getResultList();
+		closeConnection();
+		return cars;
 	}
 
 }

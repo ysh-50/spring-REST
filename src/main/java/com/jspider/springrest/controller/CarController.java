@@ -1,8 +1,11 @@
 package com.jspider.springrest.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +21,7 @@ public class CarController {
 	private CarService carService;
 	
 	
-	//add car
+	//ADD CAR
 	@PostMapping(path="/car")
 	public ResponseEntity<ResponseStructure<Car>> addCar(@RequestBody Car car){
 		Car addedCar = carService.addCar(car);  //MCS
@@ -29,8 +32,25 @@ public class CarController {
 		resposeStructure.setStatus(HttpStatus.OK.value());   //to convert in int
 		return new ResponseEntity<ResponseStructure<Car>>(resposeStructure, HttpStatus.OK);
 		
-		
-		
+	}
+	
+	//FIND ALL CARS
+	@GetMapping(path="/cars")
+	public ResponseEntity<ResponseStructure<List<Car>>> findAllCars(){
+		List<Car> cars = carService.findAllCars();
+		ResponseStructure<List<Car>> responseStructure = new ResponseStructure<>();
+		if (cars != null) {
+			responseStructure.setMessage("Car found!");
+			responseStructure.setData(cars);
+			responseStructure.setStatus(HttpStatus.FOUND.value());       //convert in int
+			return new ResponseEntity<ResponseStructure<List<Car>>>(responseStructure,HttpStatus.FOUND);
+			
+		}else {
+			responseStructure.setMessage("Car not found!");
+			responseStructure.setData(cars);
+			responseStructure.setStatus(HttpStatus.NOT_FOUND.value());
+			return new ResponseEntity<ResponseStructure<List<Car>>>(responseStructure,HttpStatus.NOT_FOUND);
+		}
 	}
 
 }

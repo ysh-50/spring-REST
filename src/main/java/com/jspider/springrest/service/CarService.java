@@ -1,5 +1,7 @@
 package com.jspider.springrest.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,16 @@ public class CarService {
 	//method
 	public Car addCar(Car car) {
 		return carRepository.addCar(car);      //MCS
+	}
+	
+	//method
+	public List<Car> findAllCars(){
+		List<Car> cars = carRepository.findAllCars();
+		if (cars != null && cars.size() > 0) {
+			return cars;
+		}else {
+			return null;
+		}
 	}
 
 }
